@@ -1,3 +1,6 @@
+// =======================
+// 1) DATI CHECKLIST
+// =======================
 const checklist = [
   {
     nome: "OSSIGENO",
@@ -344,51 +347,235 @@ const checklist = [
   }
 ];
 
-function stampaChecklist(lista, livello = 0) {
-  for (const item of lista) {
-    if(item.tipo == "Oggetto") console.log("  ".repeat(livello) + "- " + item.nome);
-    else console.log("  ".repeat(livello) + "* " + item.nome);
 
-    if (item.contenuto) {
-      stampaChecklist(item.contenuto, livello + 1);
-    }
-  }
-}
-stampaChecklist(checklist);
-
-console.log("------------------------------------------------------------");
-
-function* scorriOggetti(lista, contenitori = []) {
+// =======================
+// 2) UTILITY: FLATTEN (oggetti uno alla volta)
+// =======================
+function flattenOggetti(lista, percorso = []) {
+  const out = [];
   for (const item of lista) {
     if (item.tipo === "Contenitore") {
-      yield* scorriOggetti(item.contenuto || [], [...contenitori, item.nome]);
+      out.push(...flattenOggetti(item.contenuto || [], [...percorso, item.nome]));
     } else {
-      yield contenitori.join("\n") + "\n" + item.nome;
+      out.push({
+        path: [...percorso], // array di contenitori
+        nome: item.nome
+      });
     }
   }
+  return out;
 }
 
-function stampaNext(it) {
-  const res = it.next();
+// =======================
+// 3) STATO APP
+// =======================
+const state = {
+  screen: "home",     // home | bravo | check
+  notesBravo: "",
+  items: [],          // lista oggetti flatten
+  index: 0,           // indice corrente
+  done: new Set()     // indici fatti
+};
 
-  if (res.done) {
-    console.log("fine");
+// =======================
+// 4) UI (single page)
+// =======================
+window.addEventListener("DOMContentLoaded", () => {
+  const app = document.getElementById("app");
+  if (!app) {
+    console.error("Manca <div id='app'></div> in index.html");
     return;
   }
 
-  console.log(res.value + "\n");
-}
+  function render() {
+    if (state.screen === "home") return renderHome();
+    if (state.screen === "bravo") return renderBravo();
+    if (state.screen === "check") return renderCheck();
+  }
 
-const it = scorriOggetti(checklist);
+  function renderHome() {
+    app.innerHTML = `
+      <div class="screen">
+        <h1>Checklist Operativa</h1>
+        <p class="small">Scegli il tipo di procedura</p>
 
-for (let i = 0; i < 10; i++) {
-  stampaNext(it);
-}
+        <div class="buttons">
+          <button id="btnBravo">BRAVO</button>
+          <button id="btnOrdinaria">ORDINARIA</button>
+        </div>
+      </div>
+    `;
 
-document.getElementById("bravo").onclick = () => {
-  console.log("BRAVO");
-};
+    document.getElementById("btnBravo").addEventListener("click", () => {
+      state.screen = "bravo";
+      render();
+    });
 
-document.getElementById("ordinaria").onclick = () => {
-  console.log("ORDINARIA");
-};
+    document.getElementById("btnOrdinaria").addEventListener("click", () => {
+      alert("Ordinaria: da fare");
+    });
+  }
+  
+  function stampaChecklist(lista, livello = 0) {
+    let testo = "";
+
+    for (const item of lista) {
+      if (item.tipo === "Oggetto") {
+        testo += "  ".repeat(livello) + "- " + item.nome + "\n";
+      } else {
+        testo += "  ".repeat(livello) + "* " + item.nome + "\n";
+      }
+  
+      if (item.contenuto) {
+        testo += stampaChecklist(item.contenuto, livello + 2);
+      }
+    }
+    return testo;
+  }
+
+  function renderBravo() {
+    app.innerHTML = `
+      <div class="screen">
+        <h1>BRAVO</h1>
+        <textarea id="bravoNotes" rows="30" cols="50" readonly">${escapeHtml(
+          state.notesBravo
+        )}</textarea>
+
+        <div class="buttons">
+          <button id="btnStart">INIZIA CHECK</button>
+          <button id="btnBack">INDIETRO</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("btnBack").addEventListener("click", () => {
+      state.screen = "home";
+      render();
+    });
+
+    document.getElementById("btnStart").addEventListener("click", () => {
+      state.notesBravo = document.getElementById("bravoNotes").value.trim();
+
+      // prepara la lista oggetti
+      state.items = flattenOggetti(checklist);
+      state.index = 0;
+      state.done = new Set();
+
+      state.screen = "check";
+      render();
+    });
+    document.querySelector("textarea").value = stampaChecklist(checklist);
+  }
+
+  function renderCheck() {
+    const total = state.items.length;
+
+    if (total === 0) {
+      app.innerHTML = `
+        <div class="screen">
+          <h1>Check</h1>
+          <p>Nessun oggetto trovato.</p>
+          <div class="buttons">
+            <button id="btnExit">ESCI</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("btnExit").addEventListener("click", () => {
+        state.screen = "home";
+        render();
+      });
+      return;
+    }
+
+    // se fuori range, fine
+    if (state.index >= total) {
+      const fatti = state.done.size;
+      app.innerHTML = `
+        <div class="screen">
+          <h1>Finito</h1>
+          <p class="small">Completati: ${fatti} / ${total}</p>
+
+          <div class="buttons">
+            <button id="btnRestart">RIPARTI</button>
+            <button id="btnExit">ESCI</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("btnRestart").addEventListener("click", () => {
+        state.index = 0;
+        state.done = new Set();
+        render();
+      });
+
+      document.getElementById("btnExit").addEventListener("click", () => {
+        state.screen = "home";
+        render();
+      });
+
+      return;
+    }
+
+    const item = state.items[state.index];
+    const pathText = item.path.join(" > ");
+    const isDone = state.done.has(state.index);
+
+    app.innerHTML = `
+      <div class="screen">
+        <h1>Check BRAVO</h1>
+        <p class="small">${state.index + 1} / ${total}</p>
+
+        <div style="width:min(520px,100%); text-align:left;">
+          <div class="small" style="white-space:pre-wrap;">${escapeHtml(pathText)}</div>
+          <h2 style="margin:12px 0 8px 0;">${escapeHtml(item.nome)}</h2>
+
+          <label style="display:flex; gap:10px; align-items:center;">
+            <input id="chkDone" type="checkbox" ${isDone ? "checked" : ""}/>
+            <span>Fatto</span>
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button id="btnPrev" ${state.index === 0 ? "disabled" : ""}>INDIETRO</button>
+          <button id="btnNext">AVANTI</button>
+          <button id="btnExit">ESCI</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("chkDone").addEventListener("change", (e) => {
+      if (e.target.checked) state.done.add(state.index);
+      else state.done.delete(state.index);
+    });
+
+    document.getElementById("btnPrev").addEventListener("click", () => {
+      if (state.index > 0) state.index--;
+      render();
+    });
+
+    document.getElementById("btnNext").addEventListener("click", () => {
+      // opzionale: segna fatto automaticamente quando vai avanti
+      // state.done.add(state.index);
+
+      state.index++;
+      render();
+    });
+
+    document.getElementById("btnExit").addEventListener("click", () => {
+      state.screen = "home";
+      render();
+    });
+  }
+
+  // piccola utility per evitare problemi con i caratteri in HTML
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  render();
+});
