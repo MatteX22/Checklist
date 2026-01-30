@@ -43,11 +43,17 @@ button {
   grid-template-columns: 1fr;
   gap: 12px;
   margin-top: 16px;
+  flex: 1;                 /* ← prende spazio */
+  align-content: center;   /* ← centro verticale */
 }
 
 .bigBtn {
   width: 100%;
-  padding: 18px 14px;
+  height: 90px;            /* ← chiave */
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 16px;
   border-radius: 12px;
 }
