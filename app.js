@@ -374,15 +374,16 @@ const state = {
   notesBravo: "",
   items: [],          // lista oggetti flatten
   index: 0,           // indice corrente
-  done: new Set()     // indici fatti
+  done: new Set(),     // indici fatti
+  path: [], // array di nomi contenitori scelti
+  history: []   // ← NUOVO
 };
 
 // =======================
 // 4) UI (single page)
 // =======================
-let app;
 window.addEventListener("DOMContentLoaded", () => {
-  app = document.getElementById("app");
+  const app = document.getElementById("app");
   if (!app) {
     console.error("Manca <div id='app'></div> in index.html");
     return;
@@ -408,8 +409,9 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
 
     document.getElementById("btnBravo").addEventListener("click", () => {
-      state.screen = "bravo";
-      render();
+      state.history = [];
+      state.path = [];
+      goTo("bravo");
     });
 
     document.getElementById("btnOrdinaria").addEventListener("click", () => {
@@ -428,40 +430,158 @@ window.addEventListener("DOMContentLoaded", () => {
       }
   
       if (item.contenuto) {
-        testo += stampaChecklist(item.contenuto, livello + 1);
+        testo += stampaChecklist(item.contenuto, livello + 2);
       }
     }
     return testo;
   }
+  
+  function contenitoriPrincipali(lista) {
+    return lista.filter(x => x.tipo === "Contenitore");
+  }
+  
+  function getContenitori(lista) {
+    return (lista || []).filter(x => x.tipo === "Contenitore");
+  }
+
+  function getOggetti(lista) {
+    return (lista || []).filter(x => x.tipo === "Oggetto");
+  }
+  
+  function goTo(screen) {
+    state.history.push({
+      screen: state.screen,
+      path: [...state.path]
+    });
+    state.screen = screen;
+    render();
+  }
+
+  function goBack() {
+    const prev = state.history.pop();
+    if (!prev) {
+      state.screen = "home";
+      state.path = [];
+      render();
+      return;
+    }
+    state.screen = prev.screen;
+    state.path = prev.path || [];
+    render();
+  }
+  
+  function getNodoDaPath(rootLista, path) {
+    let current = rootLista;
+  
+    for (const nome of path) {
+      const next = getContenitori(current).find(c => c.nome === nome);
+      if (!next) return rootLista; // fallback
+      current = next.contenuto || [];
+    }
+  
+    return current;
+  }
 
   function renderBravo() {
+    const nodo = getNodoDaPath(checklist, state.path);
+    renderMenuContenitori(nodo, "BRAVO");
+  }
+
+  function renderMenuContenitori(nodo, titolo) {
+    const contenitori = getContenitori(nodo);
+    const oggetti = getOggetti(nodo);
+
+    if (contenitori.length === 0) {
+      app.innerHTML = `
+        <div class="screen">
+          <h1>${escapeHtml(titolo)}</h1>
+          <p class="small">${escapeHtml(state.path.join(" > "))}</p>
+    
+          <p class="small">Oggetti: ${oggetti.length}</p>
+    
+          <div class="buttons">
+            <button id="btnStartCheck">INIZIA CHECK</button>
+            <button id="btnBackLevel">INDIETRO</button>
+            <button id="btnHome">HOME</button>
+          </div>
+        </div>
+      `;
+    
+      document.getElementById("btnStartCheck").addEventListener("click", () => {
+        state.items = flattenOggetti(nodo);
+        state.index = 0;
+        state.done = new Set();
+        goTo("check");
+      });
+    
+      document.getElementById("btnBackLevel").addEventListener("click", () => {
+        state.path.pop();
+        const nodoBack = getNodoDaPath(checklist, state.path);
+        renderMenuContenitori(nodoBack, "BRAVO");
+      });
+    
+      document.getElementById("btnHome").addEventListener("click", () => {
+        state.history = [];
+        state.path = [];
+        state.screen = "home";
+        render();
+      });
+    
+      return;
+    }
+  
     app.innerHTML = `
       <div class="screen">
-        <h1>BRAVO</h1>
-
-        <textarea id="bravoNotes" rows="30" cols="50" readonly></textarea>
-
+        <h1>${escapeHtml(titolo)}</h1>
+        <p class="small">${escapeHtml(state.path.join(" > "))}</p>
+  
+        <div class="grid">
+          ${contenitori
+            .map((c, i) => `<button class="bigBtn" data-i="${i}">${escapeHtml(c.nome)}</button>`)
+            .join("")}
+        </div>
+  
         <div class="buttons">
-          <button id="btnStart">INIZIA CHECK</button>
-          <button id="btnBack">INDIETRO</button>
+          <button id="btnBackLevel">INDIETRO</button>
+          <button id="btnHome">HOME</button>
         </div>
       </div>
     `;
+  
+    // clic su contenitore -> vai più dentro
+    document.querySelectorAll(".bigBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.i);
+        const scelto = contenitori[i];
+        const sottoContenitori = getContenitori(scelto.contenuto || []);
 
-    // metti TUTTA la checklist
-    document.getElementById("bravoNotes").value = stampaChecklist(checklist);
-
-    document.getElementById("btnBack").addEventListener("click", () => {
-      state.screen = "home";
-      render();
+        // SE ha sotto-contenitori → vai al livello dopo (menu)
+        if (sottoContenitori.length > 0) {
+          state.path.push(scelto.nome);
+          renderMenuContenitori(scelto.contenuto || [], "BRAVO");
+          return;
+        }
+        
+        // SE è foglia → parte subito la CHECK
+        // IMPORTANT: NON cambiare state.path (così ESCI torna al livello prima)
+        state.items = flattenOggetti([scelto]); // check SOLO di quel ramo
+        state.index = 0;
+        state.done = new Set();
+        goTo("check");
+      });
     });
 
-    document.getElementById("btnStart").addEventListener("click", () => {
-      state.items = flattenOggetti(checklist);
-      state.index = 0;
-      state.done = new Set();
-
-      state.screen = "check";
+  
+    // indietro di 1 livello: ricalcola dal root usando path
+    document.getElementById("btnBackLevel").addEventListener("click", () => {
+      state.path.pop();
+      const nodoBack = getNodoDaPath(checklist, state.path);
+      renderMenuContenitori(nodoBack, "BRAVO");
+    });
+  
+    document.getElementById("btnHome").addEventListener("click", () => {
+      state.history = [];
+      state.screen = "home";
       render();
     });
   }
@@ -480,8 +600,7 @@ window.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
       document.getElementById("btnExit").addEventListener("click", () => {
-        state.screen = "home";
-        render();
+        goBack();
       });
       return;
     }
@@ -508,8 +627,7 @@ window.addEventListener("DOMContentLoaded", () => {
       });
 
       document.getElementById("btnExit").addEventListener("click", () => {
-        state.screen = "home";
-        render();
+        goBack();
       });
 
       return;
@@ -554,15 +672,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnNext").addEventListener("click", () => {
       // opzionale: segna fatto automaticamente quando vai avanti
-      // state.done.add(state.index);
+      state.done.add(state.index);
 
       state.index++;
       render();
     });
 
     document.getElementById("btnExit").addEventListener("click", () => {
-      state.screen = "home";
-      render();
+      goBack();
     });
   }
 

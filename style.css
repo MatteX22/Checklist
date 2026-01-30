@@ -36,3 +36,22 @@ button {
   opacity: 0.8;
   margin-top: 6px;
 }
+
+.grid {
+  width: min(520px, 100%);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.bigBtn {
+  width: 100%;
+  padding: 18px 14px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+@media (min-width: 600px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
