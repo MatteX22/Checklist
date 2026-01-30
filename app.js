@@ -380,8 +380,9 @@ const state = {
 // =======================
 // 4) UI (single page)
 // =======================
+let app;
 window.addEventListener("DOMContentLoaded", () => {
-  const app = document.getElementById("app");
+  app = document.getElementById("app");
   if (!app) {
     console.error("Manca <div id='app'></div> in index.html");
     return;
@@ -427,7 +428,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
   
       if (item.contenuto) {
-        testo += stampaChecklist(item.contenuto, livello + 2);
+        testo += stampaChecklist(item.contenuto, livello + 1);
       }
     }
     return testo;
@@ -437,9 +438,8 @@ window.addEventListener("DOMContentLoaded", () => {
     app.innerHTML = `
       <div class="screen">
         <h1>BRAVO</h1>
-        <textarea id="bravoNotes" rows="30" cols="50" readonly">${escapeHtml(
-          state.notesBravo
-        )}</textarea>
+
+        <textarea id="bravoNotes" rows="30" cols="50" readonly></textarea>
 
         <div class="buttons">
           <button id="btnStart">INIZIA CHECK</button>
@@ -448,15 +448,15 @@ window.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // metti TUTTA la checklist
+    document.getElementById("bravoNotes").value = stampaChecklist(checklist);
+
     document.getElementById("btnBack").addEventListener("click", () => {
       state.screen = "home";
       render();
     });
 
     document.getElementById("btnStart").addEventListener("click", () => {
-      state.notesBravo = document.getElementById("bravoNotes").value.trim();
-
-      // prepara la lista oggetti
       state.items = flattenOggetti(checklist);
       state.index = 0;
       state.done = new Set();
@@ -464,7 +464,6 @@ window.addEventListener("DOMContentLoaded", () => {
       state.screen = "check";
       render();
     });
-    document.querySelector("textarea").value = stampaChecklist(checklist);
   }
 
   function renderCheck() {
