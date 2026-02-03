@@ -642,14 +642,9 @@ window.addEventListener("DOMContentLoaded", () => {
         <h1>Check BRAVO</h1>
         <p class="small">${state.index + 1} / ${total}</p>
 
-        <div style="width:min(520px,100%); text-align:left;">
+        <div style="width:min(520px,100%); text-align:center;">
           <div class="small" style="white-space:pre-wrap;">${escapeHtml(pathText)}</div>
           <h2 style="margin:12px 0 8px 0;">${escapeHtml(item.nome)}</h2>
-
-          <label style="display:flex; gap:10px; align-items:center;">
-            <input id="chkDone" type="checkbox" ${isDone ? "checked" : ""}/>
-            <span>Fatto</span>
-          </label>
         </div>
 
         <div class="buttons">
@@ -659,11 +654,6 @@ window.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
-
-    document.getElementById("chkDone").addEventListener("change", (e) => {
-      if (e.target.checked) state.done.add(state.index);
-      else state.done.delete(state.index);
-    });
 
     document.getElementById("btnPrev").addEventListener("click", () => {
       if (state.index > 0) state.index--;
