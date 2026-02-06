@@ -12,4 +12,3 @@ btnOrdinaria.addEventListener("click", () => {
   // per ora placeholder
   alert("Schermata Oscar non ancora collegata");
 });
-
