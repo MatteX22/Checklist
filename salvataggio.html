@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compilazione Turno</title>
+  <link rel="stylesheet" href="salvataggio.css" />
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card">
+      <header class="head">
+        <h1>Registra CHECKLIST</h1>
+        <p>Compila tutti i campi richiesti.</p>
+      </header>
+
+      <form id="shiftForm" novalidate>
+        <div class="grid">
+          <!-- DATA -->
+          <div class="field">
+            <label for="data">Data</label>
+            <input id="data" name="data" type="date" required />
+            <small class="err" data-err-for="data"></small>
+          </div>
+
+          <!-- TURNO -->
+          <div class="field">
+            <label for="turno">Turno</label>
+            <select id="turno" name="turno" required>
+              <option value="" selected>Seleziona…</option>
+              <option value="7-13">7-13</option>
+              <option value="8-13">8-13</option>
+              <option value="13-20">13-20</option>
+              <option value="20-7">20-7</option>
+            </select>
+            <small class="err" data-err-for="turno"></small>
+          </div>
+
+          <!-- MEZZO -->
+          <div class="field">
+            <label for="mezzo">Mezzo</label>
+            <input id="mezzo" name="mezzo" type="text" placeholder="Es. Bravo 12" required />
+            <small class="err" data-err-for="mezzo"></small>
+          </div>
+        </div>
+
+        <hr class="sep" />
+
+        <h2 class="sub">Squadra</h2>
+
+        <div class="grid team">
+          <div class="field">
+            <label for="autista">Autista</label>
+            <input id="autista" name="autista" type="text" required />
+            <small class="err" data-err-for="autista"></small>
+          </div>
+
+          <div class="field">
+            <label for="caposquadra">Caposquadra</label>
+            <input id="caposquadra" name="caposquadra" type="text" required />
+            <small class="err" data-err-for="caposquadra"></small>
+          </div>
+
+          <div class="field">
+            <label for="soc2">2° Soccorritore</label>
+            <input id="soc2" name="soc2" type="text" required />
+            <small class="err" data-err-for="soc2"></small>
+          </div>
+
+          <div class="field">
+            <label for="soc3">3° Soccorritore</label>
+            <input id="soc3" name="soc3" type="text" required />
+            <small class="err" data-err-for="soc3"></small>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="status" id="status" aria-live="polite"></div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-ghost" id="btnHome">Home</button>
+            <button type="button" class="btn btn-primary" id="btnSave">Salva</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="salvataggio.js"></script>
+</body>
+</html>

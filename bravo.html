@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Checklist BRAVO</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="bravo.css" />
 </head>
 
@@ -522,6 +522,20 @@
       </section>
 
     </section>
+
+    <div id="doneOverlay" class="done-overlay is-hidden" role="status" aria-live="polite">
+      <div class="done-box">
+        <p class="done-title">Check finita</p>
+      </div>
+    </div>
+
+    <div class="footer">
+        <div class="status" id="status" aria-live="polite"></div>
+
+        <div class="actions">
+            <button type="button" class="btn btn-ghost" id="btnHome">Indietro</button>
+        </div>
+    </div>
 
   </main>
   <script src="app.js"></script>

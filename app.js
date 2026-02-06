@@ -1,4 +1,24 @@
 const ANIM_MS = 260;
+const DONE_PAGE = "salvataggio.html";   // cambia qui la pagina finale
+const DONE_DELAY_MS = 900;
+
+let doneFired = false;
+
+function allDone() {
+  return document.querySelectorAll('[data-section]:not(.is-hidden)').length === 0;
+}
+
+function showDoneAndGo() {
+  if (doneFired) return;
+  doneFired = true;
+
+  const overlay = document.getElementById("doneOverlay");
+  if (overlay) overlay.classList.remove("is-hidden");
+
+  setTimeout(() => {
+    window.location.href = DONE_PAGE;
+  }, DONE_DELAY_MS);
+}
 
 function hideBlock(el) {
   if (el.classList.contains("is-hidden")) return;
@@ -75,7 +95,10 @@ function init() {
       const parent = sub.closest("[data-parent]");
       if (parent) {
         // aspetta che la sottosezione diventi davvero .is-hidden
-        setTimeout(() => checkAndHideSection(parent), ANIM_MS + 20);
+        setTimeout(() => {
+          checkAndHideSection(parent);
+          if (allDone()) showDoneAndGo();
+        }, ANIM_MS + 20);
       }
     }
     return;
@@ -83,8 +106,26 @@ function init() {
 
     // checkbox in sezione normale
     const sec = t.closest("[data-section]");
-    if (sec) checkAndHideSection(sec);
+    if (sec) {
+      const hidden = checkAndHideSection(sec);
+      if (hidden) {
+        setTimeout(() => {
+          if (allDone()) showDoneAndGo();
+        }, ANIM_MS + 20);
+      }
+    }
+
   });
 }
 
 init();
+
+btnHome.addEventListener("click", () => {
+  const sure = confirm("Sei sicuro di uscire?");
+  if (!sure) return;
+
+  console.log("home");
+
+  // Se vuoi davvero andare alla home:
+  window.location.href = "index.html";
+});
