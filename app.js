@@ -120,6 +120,32 @@ function init() {
 
 init();
 
+document.addEventListener("change", (e) => {
+  const t = e.target;
+
+  // se è il checkbox dell'header
+  if (!t.classList.contains("cball")) return;
+
+  const section = t.closest(".section");
+  if (!section) return;
+
+  const ok = confirm("Vuoi segnare tutta la sezione come completata?");
+  if (!ok) {
+    t.checked = false;
+    return;
+  }
+
+  const boxes = section.querySelectorAll(
+    'input[type="checkbox"]:not(.cball)'
+  );
+
+  boxes.forEach(cb => {
+    cb.checked = t.checked;
+    cb.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+});
+
+
 btnHome.addEventListener("click", () => {
   const sure = confirm("Sei sicuro di uscire?");
   if (!sure) return;

@@ -34,6 +34,7 @@
             <path d="M12 6a6 6 0 1 0 0 12a6 6 0 0 0 0-12z" stroke="white" stroke-width="2" opacity=".9"/>
           </svg>
           <span>Controllo Livelli e Funzionalità</span>
+          <input class="cball" type="checkbox" id="c1all">
         </header>
 
         <div class="section-body">
@@ -66,6 +67,7 @@
             <path d="M13 10h7M17 6v8" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".9"/>
           </svg>
           <span>LIFEPAK 15</span>
+          <input class="cball" type="checkbox" id="c2all">
         </header>
 
         <div class="section-body">
@@ -99,6 +101,7 @@
               <path d="M12 17h.01" stroke="white" stroke-width="3" stroke-linecap="round"/>
             </svg>
             <span>Lucas</span>
+            <input class="cball" type="checkbox" id="c3all">
           </header>
           <div class="section-body">
             <ul class="checklist">
@@ -120,6 +123,7 @@
               <path d="M7 12h10M7 16h10" stroke="white" stroke-width="2" opacity=".9"/>
             </svg>
             <span>Borsone trauma</span>
+            <input class="cball" type="checkbox" id="c4all">
           </header>
           <div class="section-body">
             <div class="grid-2">
@@ -152,12 +156,13 @@
             <path d="M9 12h6" stroke="white" stroke-width="2" opacity=".9"/>
           </svg>
           <span>Zaino</span>
+          <input class="cball" type="checkbox" id="c5all">
         </header>
       
         <div class="zaino-body">
           <div class="zaino-grid">
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card">
                 <p class="z-title">Esterno e tasche</p>
                 <ul class="checklist">
@@ -169,7 +174,7 @@
               </div>
             </section>
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card">
                 <p class="z-title">Interno Retina</p>
                 <ul class="checklist">
@@ -180,7 +185,7 @@
               </div>
             </section>
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card">
                 <p class="z-title">Interno Vano</p>
                 <ul class="checklist">
@@ -191,7 +196,7 @@
               </div>
             </section>
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card">
                 <p class="z-title">Borsino Medicazione</p>
                 <ul class="checklist">
@@ -206,7 +211,7 @@
               </div>
             </section>
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card z-wide">
                 <p class="z-title">Borsino Ventilazione</p>
                 <div class="grid-2">
@@ -223,7 +228,7 @@
               </div>
             </section>
       
-            <section class="flat" data-subsection>
+            <section class="section" data-subsection>
               <div class="z-card z-wide">
                 <p class="z-title">Borsino Emorragie</p>
                 <div class="grid-2">
@@ -245,13 +250,14 @@
 
     <!-- ===================== PAGINA 2 ===================== -->
     <section class="paper">
-      <div class="cards-2col">
+      <div class="brand-wrap">
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-red">
+        <section class="section" data-section>
+          <header class="section-head bg-red">
             <span class="flat-icon">💡</span><span>Cassetto Medicazione</span>
+            <input class="cball" type="checkbox" id="c6all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2m1"><label for="p2m1">2 Disinfettanti</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2m2"><label for="p2m2">1 Benda elastica coban</label></li>
@@ -263,11 +269,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-blue">
+        <section class="section" data-section>
+          <header class="section-head bg-blue">
             <span class="flat-icon">🚀</span><span>Cassetto Respiro</span>
+            <input class="cball" type="checkbox" id="c7all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2r1"><label for="p2r1">5 Maschere reservoir Adulto</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2r2"><label for="p2r2">2 occhialini per ossigenoterapia</label></li>
@@ -277,11 +284,12 @@
           </div>
         </section>
 
-        <section class="flat span-2" data-section>
-          <header class="flat-head bg-green">
+        <section class="section span-2" data-section>
+          <header class="section-head bg-green">
             <span class="flat-icon">⚠️</span><span>Cassetto/Busta Scorte</span>
+            <input class="cball" type="checkbox" id="c8all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2s1"><label for="p2s1">1 Tubo connessione aspiratore endocavitario</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2s2"><label for="p2s2">1 sacchetto con tappo per aspiratore endocavitario</label></li>
@@ -294,11 +302,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-orange">
+        <section class="section" data-section>
+          <header class="section-head bg-orange">
             <span class="flat-icon">🚀</span><span>Vano Laterale DX</span>
+            <input class="cball" type="checkbox" id="c9all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2dx1"><label for="p2dx1">6 Teli traverse</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2dx2"><label for="p2dx2">5 teli termici</label></li>
@@ -310,11 +319,12 @@
           </div>
         </section>
 
-        <section class="flat span-2" data-section>
-          <header class="flat-head bg-darkblue">
+        <section class="section span-2" data-section>
+          <header class="section-head bg-darkblue">
             <span class="flat-icon">🚀</span><span>Vano Liquidi Infusionali Temp. Ambiente</span>
+            <input class="cball" type="checkbox" id="c10all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2li1"><label for="p2li1">1 Fisiologica sodio cloruro ML .1000</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2li2"><label for="p2li2">5 Fisiologiche sodio cloruro ML. 100</label></li>
@@ -323,11 +333,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-purple2">
+        <section class="section" data-section>
+          <header class="section-head bg-purple2">
             <span class="flat-icon">🚀</span><span>Vano Laterale SX</span>
+            <input class="cball" type="checkbox" id="c11all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2sx1"><label for="p2sx1">1 U.R.M. Adulto</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2sx2"><label for="p2sx2">1 Porta aghi</label></li>
@@ -337,22 +348,24 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-pink">
+        <section class="section" data-section>
+          <header class="section-head bg-pink">
             <span class="flat-icon">💡</span><span>Vano Liquidi Infusionali riscaldato</span>
+            <input class="cball" type="checkbox" id="c12all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2lr1"><label for="p2lr1">2 Fisiologiche sodio cloruro ML .1000</label></li>
             </ul>
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-orange2">
+        <section class="section" data-section>
+          <header class="section-head bg-orange2">
             <span class="flat-icon">🚀</span><span>Borsino D.P.I. Ulteriori</span>
+            <input class="cball" type="checkbox" id="c13all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2dpi1"><label for="p2dpi1">8 Maschere tipo FFP2</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2dpi2"><label for="p2dpi2">4 Protezioni Oculari (Occhiali o visiere)</label></li>
@@ -361,11 +374,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-lime">
+        <section class="section" data-section>
+          <header class="section-head bg-lime">
             <span class="flat-icon">🚀</span><span>Aspiratore endocavitario</span>
+            <input class="cball" type="checkbox" id="c14all">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2a1"><label for="p2a1">Controllo funzionalità</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2a2"><label for="p2a2">1 sacchetto con tappo</label></li>
@@ -375,11 +389,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-red2">
+        <section class="section" data-section>
+          <header class="section-head bg-red2">
             <span class="flat-icon">🚀</span><span>Borsino Scoop</span>
+            <input class="cball" type="checkbox" id="c15">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2sc1"><label for="p2sc1">1 cuscino</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2sc2"><label for="p2sc2">2 fionde</label></li>
@@ -389,11 +404,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-violet">
+        <section class="section" data-section>
+          <header class="section-head bg-violet">
             <span class="flat-icon">🚀</span><span>Borsino Ventilazione</span>
+            <input class="cball" type="checkbox" id="c16">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2v1"><label for="p2v1">1 Pallone di Ambu Adulto</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2v2"><label for="p2v2">3 maschere facciali Misure 3-4-5</label></li>
@@ -403,11 +419,12 @@
           </div>
         </section>
 
-        <section class="flat" data-section>
-          <header class="flat-head bg-sand">
+        <section class="section" data-section>
+          <header class="section-head bg-sand">
             <span class="flat-icon">🚀</span><span>Vano Pediatrico</span>
+            <input class="cball" type="checkbox" id="c17">
           </header>
-          <div class="flat-body">
+          <div class="section-body">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p2p1"><label for="p2p1">1 dispositivo contenimento pediatrico (farfallina)</label></li>
               <li class="item"><input class="cb" type="checkbox" id="p2p2"><label for="p2p2">1 estricatore pediatrico KED</label></li>
@@ -422,11 +439,12 @@
     <!-- ===================== PAGINA 3 ===================== -->
     <section class="paper">
 
-      <section class="flat narrow" data-section>
-        <header class="flat-head bg-green">
+      <section class="section narrow" data-section>
+        <header class="section-head bg-green">
           <span class="flat-icon">🚀</span><span>Panca</span>
+          <input class="cball" type="checkbox" id="c18">
         </header>
-        <div class="flat-body">
+        <div class="section-body">
           <ul class="checklist">
             <li class="item"><input class="cb" type="checkbox" id="p3pa1"><label for="p3pa1">1 telo barello di scorta</label></li>
             <li class="item"><input class="cb" type="checkbox" id="p3pa2"><label for="p3pa2">1 Estricatore Adulto (KED o XT)</label></li>
@@ -435,11 +453,12 @@
         </div>
       </section>
 
-      <section class="flat" data-section>
-        <header class="flat-head bg-red">
+      <section class="section" data-section>
+        <header class="section-head bg-red">
           <span class="flat-icon">📄</span><span>Zaino Pediatrico</span>
+          <input class="cball" type="checkbox" id="c19">
         </header>
-        <div class="flat-body">
+        <div class="section-body">
           <div class="grid-2">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p3z1"><label for="p3z1">1 Pallone di ambu pediatrico</label></li>
@@ -463,11 +482,12 @@
         </div>
       </section>
 
-      <section class="flat" data-section>
-        <header class="flat-head bg-blue">
+      <section class="section" data-section>
+        <header class="section-head bg-blue">
           <span class="flat-icon">📄</span><span>Controllo Ulteriori dotazioni</span>
+          <input class="cball" type="checkbox" id="c20">
         </header>
-        <div class="flat-body">
+        <div class="section-body">
           <div class="grid-2">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p3u1"><label for="p3u1">1 tavola spinale adulto con cuscino</label></li>
@@ -499,11 +519,12 @@
         </div>
       </section>
 
-      <section class="flat" data-section>
-        <header class="flat-head bg-pink">
+      <section class="section" data-section>
+        <header class="section-head bg-pink">
           <span class="flat-icon">📄</span><span>KIT Scasso</span>
+          <input class="cball" type="checkbox" id="c21">
         </header>
-        <div class="flat-body">
+        <div class="section-body">
           <div class="grid-2">
             <ul class="checklist">
               <li class="item"><input class="cb" type="checkbox" id="p3k1"><label for="p3k1">Fumogeni e torce a vento</label></li>

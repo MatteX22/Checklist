@@ -60,7 +60,8 @@ btnSave.addEventListener("click", () => {
   if (!ok) return;
 
   setStatus("Salvato.");
-  window.location.href = "index.html";
+  createPDF();
+  //window.location.href = "index.html";
 });
 
 btnHome.addEventListener("click", () => {
@@ -77,3 +78,19 @@ fields.forEach(f => {
   el.addEventListener("input", () => setError(f.id, ""));
   el.addEventListener("change", () => setError(f.id, ""));
 });
+
+function createPDF() {
+  const checkedIds = JSON.parse(localStorage.getItem("checkedBravo") || "[]");
+
+  const campi = {
+    data: document.getElementById("data").value,
+    turno: document.getElementById("turno").value,
+    mezzo: document.getElementById("mezzo").value,
+    autista: document.getElementById("autista").value,
+    soc2: document.getElementById("soc2").value,
+    soc3: document.getElementById("soc3").value,
+    caposquadra: document.getElementById("caposquadra").value
+  };
+
+  salvaPdfBravo({ campi, checkedIds });
+}
