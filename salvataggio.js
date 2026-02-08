@@ -93,5 +93,4 @@ function createPDF() {
   };
 
   salvaPdfBravo({ campi, checkedIds });
-
 }
