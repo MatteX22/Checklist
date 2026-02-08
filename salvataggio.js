@@ -61,7 +61,7 @@ btnSave.addEventListener("click", () => {
 
   setStatus("Salvato.");
   createPDF();
-  //window.location.href = "index.html";
+  window.location.href = "index.html";
 });
 
 btnHome.addEventListener("click", () => {
@@ -93,4 +93,5 @@ function createPDF() {
   };
 
   salvaPdfBravo({ campi, checkedIds });
+
 }
